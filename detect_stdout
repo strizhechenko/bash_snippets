@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$(readlink /proc/$$/fd/1)" = '/dev/pts/'* ]]; then
+	# свистелки
+        . /etc/init.d/functions
+else
+	# без свистелок
+        SETCOLOR_NORMAL=''
+        SETCOLOR_FAILURE=''
+        SETCOLOR_SUCCESS=''
+fi
