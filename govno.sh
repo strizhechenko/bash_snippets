@@ -1,10 +1,16 @@
 #!/bin/bash
 
-# deps: apt-get install shellcheck / brew install cabal || yum -y install cabal-install; cabal install shellcheck
 # usage: govno.sh git/bash_repo/
 # usage: cd git/bash_repo/; govno.sh
 
 set -eu
+
+install_shellcheck() {
+	apt-get install shellcheck && return 0
+	brew install cabal || yum -y install cabal-install || return 1
+	cabal update
+	cabal install shellcheck
+}
 
 script_list() {
 	grep -r '#!/bin/bash' "${1:-.}" 2>/dev/null | cut -d ':' -f1 | fgrep -v '.git' | sed -e 's|^\./||g' || true
