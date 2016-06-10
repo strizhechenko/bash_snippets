@@ -8,7 +8,7 @@ script_list() {
 
 script_check() {
 	echo -n "$1 "
-	shellcheck "$1" | wc -l | tr -d ' '
+	shellcheck "$1" | fgrep -c '^-- ' || true
 }
 
 directory_lint() {
