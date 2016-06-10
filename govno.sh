@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# deps: apt-get install shellcheck / brew install cabal && cabal install shellcheck
+# deps: apt-get install shellcheck / brew install cabal || yum -y install cabal-install; cabal install shellcheck
 # usage: govno.sh git/bash_repo/
 # usage: cd git/bash_repo/; govno.sh
 
