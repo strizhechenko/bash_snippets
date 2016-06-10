@@ -3,7 +3,7 @@
 set -eu
 
 script_list() {
-	grep -r '#!/bin/bash' "${1:-.}" 2>/dev/null | cut -d ':' -f1
+	grep -r '#!/bin/bash' "${1:-.}" 2>/dev/null | cut -d ':' -f1 | fgrep -v '.git' | sed -e 's|^\./||g' || true
 }
 
 script_check() {
