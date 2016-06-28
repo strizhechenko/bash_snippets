@@ -5,6 +5,10 @@ if [ ! -f .gitignore ]; then
 	echo *.pyc >> .gitignore
 fi
 
+if [ ! -d .git/ ]; then
+	git init
+fi
+
 if [ ! -f env/bin/activate ]; then
 	virtualenv env
 fi
@@ -20,4 +24,5 @@ pip install "ipython<2"
 easy_install readline
 pip install --upgrade setuptools
 
+git status
 echo . env/bin/activate
