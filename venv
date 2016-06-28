@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ ! -f ,gitignore ]; then
+	echo env/ > .gitignore
+	echo *pyc >> .gitignore
+fi
+
+if [ ! -f env/bin/activate ]; then
+	virtualenv env
+fi
+
+. env/bin/activate
+
+if [ -f ./requirements.txt ]; then
+	pip install -r requirements.txt
+fi
+
+pip install pylint
+pip install "ipython<2"
+easy_install readline
+pip install --upgrade setuptools
+
+echo . env/bin/activate
