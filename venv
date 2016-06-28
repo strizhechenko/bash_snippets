@@ -2,7 +2,7 @@
 
 if [ ! -f .gitignore ]; then
 	echo env/ > .gitignore
-	echo *pyc >> .gitignore
+	echo *.pyc >> .gitignore
 fi
 
 if [ ! -f env/bin/activate ]; then
