@@ -1,0 +1,10 @@
+__exit() {
+        RETVAL=$?
+        if [ "$RETVAL" != 0 ]; then
+                echo -n "ERROR($RETVAL): $0 "
+                for ((i=${#FUNCNAME[@]}; i>0; i--)); do
+                        echo -n "${FUNCNAME[$i-1]} "
+                done | sed -e 's/ $/\n/; s/ / -> /g'
+        fi
+        return $RETVAL
+}
