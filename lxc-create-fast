@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -eux
+
+: "$0 <name> <ip> <gateway> [<bridge>]"
+: "$0 builder 192.168.1.23/24 192.168.1.1 br0"
+
+copy_ssh_keys() {
+	local rootfs=/var/lib/lxc/$name/rootfs
+	mkdir -p $rootfs/root/.ssh
+	cp -a ~/.ssh/authorized_keys $rootfs/root/.ssh/authorized_keys
+}
+
+set_network() {
+	sed -E "s|virbr0|$bridge\nlxc.network.ipv4 = $ip\nlxc.network.ipv4.gateway = $gateway|g
+		s/(lxc.utsname = )(.*)$/\1$name/g
+		s|^lxc.rootfs.*|lxc.rootfs = /var/lib/lxc/$name/rootfs|g" -i /var/lib/lxc/$name/config
+}
+
+create() {
+	if lxc-ls | grep -q "^$name$"; then
+		echo "$name already exists"
+		read -p 'destroy? y/N ' t
+		if [ "$t" != "y" ]; then
+			exit 1
+		fi
+		lxc-stop -n $name || true
+		lxc-destroy -n $name || true
+	fi
+	lxc-create -t centos -n "$name"
+}
+
+main() {
+	create
+	set_network
+	copy_ssh_keys
+	head -c 500 /dev/urandom | chroot /var/lib/lxc/$name/rootfs passwd root --stdin
+	lxc-start -d -n $name
+}
+
+name="$1"
+ip="$2"
+gateway="$3"
+bridge="${4:-br0}"
+
+main
