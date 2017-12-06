@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -eu -Opipefail
+pstree -upal | egrep -w --color "($(lsof -Fp ${1:-/} | tr -d 'p' | tr '\n' '|' | sed 's/|$//'))"
